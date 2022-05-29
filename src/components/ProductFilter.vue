@@ -30,49 +30,12 @@
       <fieldset class="form__block">
         <legend class="form__legend">Цвет</legend>
         <ul class="colors">
-          <li class="colors__item">
+          <li class="colors__item" v-for="color in colors" :key="color.id">
             <label class="colors__label">
-              <input class="colors__radio sr-only" type="radio" name="color" value="#73B6EA" v-model="currentColor">
-              <span class="colors__value" style="background-color: #73B6EA;">
+              <input class="colors__radio sr-only" type="radio" name="color" :value="color.id" v-model="currentColor">
+              <span class="colors__value" :style="{ backgroundColor: color.code, }">
               </span>
             </label>
-          </li>
-          <li class="colors__item">
-            <label class="colors__label">
-              <input class="colors__radio sr-only" type="radio" name="color" value="#FFBE15" v-model="currentColor">
-              <span class="colors__value" style="background-color: #FFBE15;">
-              </span>
-            </label>
-          </li>
-          <li class="colors__item">
-            <label class="colors__label">
-              <input class="colors__radio sr-only" type="radio" name="color" value="#939393" v-model="currentColor">
-              <span class="colors__value" style="background-color: #939393;">
-              </span></label>
-          </li>
-          <li class="colors__item">
-            <label class="colors__label">
-              <input class="colors__radio sr-only" type="radio" name="color" value="#8BE000" v-model="currentColor">
-              <span class="colors__value" style="background-color: #8BE000;">
-              </span></label>
-          </li>
-          <li class="colors__item">
-            <label class="colors__label">
-              <input class="colors__radio sr-only" type="radio" name="color" value="#FF6B00" v-model="currentColor">
-              <span class="colors__value" style="background-color: #FF6B00;">
-              </span></label>
-          </li>
-          <li class="colors__item">
-            <label class="colors__label">
-              <input class="colors__radio sr-only" type="radio" name="color" value="#FFF" v-model="currentColor">
-              <span class="colors__value" style="background-color: #FFF;">
-              </span></label>
-          </li>
-          <li class="colors__item">
-            <label class="colors__label">
-              <input class="colors__radio sr-only" type="radio" name="color" value="#000" v-model="currentColor">
-              <span class="colors__value" style="background-color: #000;">
-              </span></label>
           </li>
         </ul>
       </fieldset>
@@ -148,7 +111,8 @@
 </template>
 
 <script>
-import categories from '../data/categories';
+import axios from 'axios';
+import BASE_API_URL from '@/config';
 
 export default {
   data() {
@@ -157,12 +121,18 @@ export default {
       currentPriceTo: 0,
       currentCategoryId: 0,
       currentColor: 0,
+
+      categoriesData: null,
+      colorsData: null,
     };
   },
   props: ['priceFrom', 'priceTo', 'categoryId', 'color'],
   computed: {
     categories() {
-      return categories;
+      return this.categoriesData ? this.categoriesData.items : [];
+    },
+    colors() {
+      return this.colorsData ? this.colorsData.items : [];
     },
   },
   watch: {
@@ -193,6 +163,18 @@ export default {
       this.$emit('update:categoryId', 0);
       this.$emit('update:color', 0);
     },
+    loadCategories() {
+      axios.get(`${BASE_API_URL}/api/productCategories`)
+        .then((resopnse) => { this.categoriesData = resopnse.data; });
+    },
+    loadColors() {
+      axios.get(`${BASE_API_URL}/api/colors`)
+        .then((resopnse) => { this.colorsData = resopnse.data; });
+    },
+  },
+  created() {
+    this.loadCategories();
+    this.loadColors();
   },
 };
 </script>

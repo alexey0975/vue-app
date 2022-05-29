@@ -8,7 +8,7 @@
           <img src="img/svg/logo-tech.svg" alt="Логотип интернет магазина Технозавррр" width="190" height="33">
         </a>
 
-        <a class="header__tel" href="tel:8 800 600 90 09">
+        <a class="header__tel" href="tel:88006009009">
           8 800 600 90 09
         </a>
 
@@ -114,10 +114,23 @@
 </template>
 
 <script>
+import { mapActions, mapMutations } from 'vuex';
 import CartIndicator from './components/CartIndicator.vue';
 
 export default {
   components: { CartIndicator },
+  created() {
+    const userAccessKey = localStorage.getItem('userAccessKey');
+    if (userAccessKey) {
+      this.updateUserAccessKey(userAccessKey);
+    }
+
+    this.loadCart();
+  },
+  methods: {
+    ...mapActions(['loadCart']),
+    ...mapMutations(['updateUserAccessKey']),
+  },
 };
 </script>
 
@@ -129,4 +142,57 @@ export default {
   text-align center
   color #2c3e50
   margin-top 60px
+
+.button--load
+  padding 0
+  background transparent
+
+.loader
+  overflow hidden
+  font-size 10px
+  margin 50px auto
+  text-indent -9999em
+  width 11em
+  height 11em
+  border-radius 50%
+  background #9EFF00
+  background linear-gradient(to right, #9EFF00 10%, rgba(101, 171, 248, 0) 42%)
+  position relative
+  animation load3 1.4s infinite linear
+  transform translateZ(0)
+
+.loader--small
+  font-size 3px
+  display inline-block
+  margin 0
+
+.loader:before
+  width 50%
+  height 50%
+  background #9EFF00
+  border-radius 100% 0 0 0
+  position absolute
+  top 0
+  left 0
+  content ''
+
+.loader:after
+  background white
+  width 75%
+  height 75%
+  border-radius 50%
+  content ''
+  margin auto
+  position absolute
+  top 0
+  left 0
+  bottom 0
+  right 0
+
+@keyframes load3
+  0%
+    transform rotate(0deg)
+
+  100%
+    transform rotate(360deg)
 </style>
