@@ -73,8 +73,8 @@
                 </button>
               </div>
 
-              <button class="button button--primery" :class="{ 'button--load': productAddSending }"
-                type="submit" :disabled="productAddSending">
+              <button class="button button--primery" :class="{ 'button--load': productAddSending }" type="submit"
+                :disabled="productAddSending">
                 <span v-show="!productAddSending">В корзину</span>
                 <span v-show="productAddSending" class="loader loader--small"></span>
               </button>
@@ -122,9 +122,8 @@
 <script>
 import gotoPage from '@/helpers/gotoPage';
 import numberFormat from '@/helpers/numberFormat';
-import axios from 'axios';
-import BASE_API_URL from '@/config';
 import { mapActions } from 'vuex';
+import ProductsApi from '@/api/ProductsApi';
 
 export default {
   data() {
@@ -182,7 +181,7 @@ export default {
     loadProduct() {
       this.productLoading = true;
       this.productLoadingFailed = false;
-      axios.get(`${BASE_API_URL}/api/products/${this.$route.params.id}`)
+      ProductsApi.getById(this.$route.params.id)
         .then((response) => { this.productData = response.data; })
         .catch(() => { this.productLoadingFailed = true; })
         .finally(() => { this.productLoading = false; });

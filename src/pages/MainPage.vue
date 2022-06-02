@@ -33,8 +33,7 @@
 import ProductList from '@/components/ProductList.vue';
 import BasePagination from '@/components/BasePagination.vue';
 import ProductFilter from '@/components/ProductFilter.vue';
-import axios from 'axios';
-import BASE_API_URL from '@/config';
+import ProductsApi from '@/api/ProductsApi';
 
 export default {
   components: { ProductList, BasePagination, ProductFilter },
@@ -73,15 +72,13 @@ export default {
       this.productsLoadingFailed = false;
       clearTimeout(this.loadProductsTimer);
       this.loadProductsTimer = setTimeout(() => {
-        axios.get(`${BASE_API_URL}/api/products`, {
-          params: {
-            page: this.page,
-            limit: this.productsPerPage,
-            categoryId: this.filterCategoryId,
-            minPrice: this.filterPriceFrom,
-            maxPrice: this.filterPriceTo,
-            colorId: this.filterColor,
-          },
+        ProductsApi.getList({
+          page: this.page,
+          limit: this.productsPerPage,
+          categoryId: this.filterCategoryId,
+          minPrice: this.filterPriceFrom,
+          maxPrice: this.filterPriceTo,
+          colorId: this.filterColor,
         })
           .then((response) => { this.productsData = response.data; })
           .catch(() => { this.productsLoadingFailed = true; })
