@@ -10,8 +10,8 @@
     </div>
 
     <div class="content__catalog">
-      <ProductFilter :price-from.sync="filterPriceFrom" :price-to.sync="filterPriceTo"
-        :category-id.sync="filterCategoryId" :color.sync="filterColor" />
+      <ProductFilter v-model:price-from="filterPriceFrom" v-model:price-to="filterPriceTo"
+        v-model:category-id="filterCategoryId" v-model:color="filterColor" />
       <section class="catalog">
         <div v-if="productsLoading" class="loader">Загрузка товаров...</div>
 
@@ -46,7 +46,7 @@ export default {
 
       page: 1,
 
-      productsPerPage: 3,
+      productsPerPage: 6,
       productsData: null,
       productsLoading: false,
       productsLoadingFailed: false,

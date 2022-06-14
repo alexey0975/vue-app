@@ -23,7 +23,7 @@
         Корзина
       </h1>
       <span class="content__info">
-        3 товара
+        {{ products.length }} {{ wordProductFormat }}
       </span>
     </div>
 
@@ -101,9 +101,7 @@
 
           <div class="cart__total">
             <p>Доставка: <b>500 ₽</b></p>
-            <p>Итого: <b>{{ products.length }}</b> {{ 'товар' | wordEndFormat(products.length) }} на сумму <b>{{
-                totalPrice | numberFormat
-            }} ₽</b></p>
+            <p>Итого: <b>{{ products.length }}</b> {{ wordProductFormat }} на сумму <b>{{ totalPricePretty }} ₽</b></p>
           </div>
 
           <button class="cart__button button button--primery" type="submit">
@@ -126,13 +124,12 @@ import OrderItem from '@/components/OrderItem.vue';
 import BaseFormText from '@/components/BaseFormText.vue';
 import BaseFormTextarea from '@/components/BaseFormTextarea.vue';
 import { mapGetters } from 'vuex';
+import OrderApi from '@/api/OrderApi';
 import numberFormat from '@/helpers/numberFormat';
 import wordEndFormat from '@/helpers/wordEndFormat';
-import OrderApi from '@/api/OrderApi';
 
 export default {
   components: { BaseFormText, BaseFormTextarea, OrderItem },
-  filters: { numberFormat, wordEndFormat },
   data() {
     return {
       formData: {},
@@ -147,6 +144,12 @@ export default {
       products: 'cartDetailProducts',
       totalPrice: 'cartTotalPrice',
     }),
+    totalPricePretty() {
+      return numberFormat(this.totalPrice);
+    },
+    wordProductFormat() {
+      return wordEndFormat('товар', this.products.length);
+    },
   },
 
   methods: {

@@ -1,7 +1,7 @@
 <template>
   <li class="cart__order">
     <h3>{{ item.product.title }}</h3>
-    <b>{{ item.amount }} X {{ item.product.price | numberFormat }} ₽</b>
+    <b>{{ item.amount }} X {{ pricePretty }} ₽</b>
     <span>Артикул: {{ item.product.id }}</span>
   </li>
 </template>
@@ -10,8 +10,11 @@
 import numberFormat from '@/helpers/numberFormat';
 
 export default {
-  filters: { numberFormat },
-
   props: ['item'],
+  computed: {
+    pricePretty() {
+      return numberFormat(this.item.product.price);
+    },
+  },
 };
 </script>

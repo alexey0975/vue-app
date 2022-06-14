@@ -36,7 +36,7 @@
     </div>
 
     <b class="product__price">
-      {{ item.product.price * item.amount | numberFormat }} ₽
+      {{ totalPricePretty }} ₽
     </b>
 
     <button class="product__del button-del" type="button" aria-label="Удалить товар из корзины"
@@ -53,11 +53,11 @@ import numberFormat from '@/helpers/numberFormat';
 import { mapActions } from 'vuex';
 
 export default {
-  filters: {
-    numberFormat,
-  },
   props: ['item'],
   computed: {
+    totalPricePretty() {
+      return numberFormat(this.item.product.price * this.item.amount);
+    },
     amount: {
       get() {
         return this.item.amount;

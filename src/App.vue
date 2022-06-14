@@ -1,5 +1,4 @@
 <template>
-  <div>
     <header class="header">
       <div class="header__wrapper container">
         <span class="header__info">Каталог</span>
@@ -110,7 +109,6 @@
         </span>
       </div>
     </footer>
-  </div>
 </template>
 
 <script>
@@ -141,7 +139,6 @@ export default {
   -moz-osx-font-smoothing grayscale
   text-align center
   color #2c3e50
-  margin-top 60px
 
 .button--load
   padding 0

@@ -84,8 +84,8 @@
 
           <div class="cart__total">
             <p>Доставка: <b>500 ₽</b></p>
-            <p>Итого: <b>{{ order.basket.items.length }}</b> {{ 'товар' | wordEndFormat(order.basket.items.length) }} на
-              сумму <b>{{ order.totalPrice | numberFormat }} ₽</b></p>
+            <p>Итого: <b>{{ order.basket.items.length }}</b> {{ wordProductFormat }} на
+              сумму <b>{{ totalPricePretty }} ₽</b></p>
           </div>
         </div>
       </form>
@@ -95,12 +95,11 @@
 
 <script>
 import OrderItem from '@/components/OrderItem.vue';
+import { mapActions } from 'vuex';
 import numberFormat from '@/helpers/numberFormat';
 import wordEndFormat from '@/helpers/wordEndFormat';
-import { mapActions } from 'vuex';
 
 export default {
-  filters: { numberFormat, wordEndFormat },
 
   components: { OrderItem },
 
@@ -124,6 +123,12 @@ export default {
           })),
         },
       };
+    },
+    totalPricePretty() {
+      return numberFormat(this.order.totalPrice);
+    },
+    wordProductFormat() {
+      return wordEndFormat('товар', this.order.basket.items.length);
     },
   },
 

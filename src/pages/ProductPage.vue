@@ -37,7 +37,7 @@
         <div class="item__form">
           <form class="form" action="#" method="POST" @submit.prevent="addToCart">
             <b class="item__price">
-              {{ product.price | numberFormat }} ₽
+              {{ pricePretty }} ₽
             </b>
 
             <fieldset class="form__block">
@@ -121,9 +121,9 @@
 
 <script>
 import gotoPage from '@/helpers/gotoPage';
-import numberFormat from '@/helpers/numberFormat';
 import { mapActions } from 'vuex';
 import ProductsApi from '@/api/ProductsApi';
+import numberFormat from '@/helpers/numberFormat';
 
 export default {
   data() {
@@ -138,9 +138,6 @@ export default {
       productAddSending: false,
     };
   },
-  filters: {
-    numberFormat,
-  },
   computed: {
     product() {
       return {
@@ -148,7 +145,9 @@ export default {
         image: this.productData.image.file.url,
       };
     },
-
+    pricePretty() {
+      return numberFormat(this.product.price);
+    },
     category() {
       return this.productData.category;
     },
@@ -188,13 +187,12 @@ export default {
     },
   },
 
-  watch: {
-    '$route.params.id': {
-      handler() {
-        this.loadProduct();
-      },
-      immediate: true,
-    },
+  created() {
+    this.loadProduct();
+  },
+
+  beforeRouteUpdate() {
+    this.loadProduct();
   },
 };
 </script>

@@ -29,12 +29,11 @@
 
 <script>
 export default {
-  model: {
-    prop: 'page',
-    event: 'paginate',
-  },
-  props: ['page', 'count', 'perPage'],
+  props: ['modelValue', 'count', 'perPage'],
   computed: {
+    page() {
+      return this.modelValue;
+    },
     pages() {
       return Math.ceil(this.count / this.perPage);
     },
@@ -42,17 +41,17 @@ export default {
   methods: {
     paginate(page) {
       if (page >= 1 && page <= this.pages) {
-        this.$emit('paginate', page);
+        this.$emit('update:modelValue', page);
       }
     },
     paginateNext(page) {
       if (page >= 1 && page <= this.pages) {
-        this.$emit('paginate', page + 1);
+        this.$emit('update:modelValue', page + 1);
       }
     },
     paginatePrew(page) {
       if (page >= 1 && page <= this.pages) {
-        this.$emit('paginate', page - 1);
+        this.$emit('update:modelValue', page - 1);
       }
     },
   },
