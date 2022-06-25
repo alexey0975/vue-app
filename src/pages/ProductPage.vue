@@ -5,9 +5,7 @@
     <div class="content__top">
       <ul class="breadcrumbs">
         <li class="breadcrumbs__item">
-          <router-link class="breadcrumbs__link" :to="{ name: 'main' }">
-            Каталог
-          </router-link>
+          <router-link class="breadcrumbs__link" :to="{ name: 'main' }"> Каталог </router-link>
         </li>
         <li class="breadcrumbs__item">
           <router-link class="breadcrumbs__link" :to="{ name: 'main' }">
@@ -25,7 +23,7 @@
     <section class="item">
       <div class="item__pics pics">
         <div class="pics__wrapper">
-          <img width="570" height="570" :src="product.image" :alt="product.title">
+          <img width="570" height="570" :src="product.image" :alt="product.title" />
         </div>
       </div>
 
@@ -36,18 +34,15 @@
         </h2>
         <div class="item__form">
           <form class="form" action="#" method="POST" @submit.prevent="addToCart">
-            <b class="item__price">
-              {{ pricePretty }} ₽
-            </b>
+            <b class="item__price"> {{ pricePretty }} ₽ </b>
 
             <fieldset class="form__block">
               <legend class="form__legend">Цвет:</legend>
               <ul class="colors">
                 <li class="colors__item" v-for="color in product.colors" :key="color.id">
                   <label class="colors__label">
-                    <input class="colors__radio sr-only" type="radio" name="color-item" :value="color.id">
-                    <span class="colors__value" :style="{ backgroundColor: color.code }">
-                    </span>
+                    <input class="colors__radio sr-only" type="radio" name="color-item" :value="color.id" />
+                    <span class="colors__value" :style="{ backgroundColor: color.code }"> </span>
                   </label>
                 </li>
               </ul>
@@ -55,15 +50,14 @@
 
             <div class="item__row">
               <div class="form__counter">
-                <button type="button" :class="{ 'disabled': productAmount <= 1 }" aria-label="Убрать один товар"
-                  @click="downProductAmount">
+                <button type="button" :class="{ disabled: productAmount <= 1 }" aria-label="Убрать один товар" @click="downProductAmount">
                   <svg width="12" height="12" fill="currentColor">
                     <use xlink:href="#icon-minus"></use>
                   </svg>
                 </button>
 
                 <label>
-                  <input type="text" v-model.number="productAmount" name="count">
+                  <input type="text" v-model.number="productAmount" name="count" />
                 </label>
 
                 <button type="button" aria-label="Добавить один товар" @click="upProductAmount">
@@ -73,14 +67,13 @@
                 </button>
               </div>
 
-              <button class="button button--primery" :class="{ 'button--load': productAddSending }" type="submit"
-                :disabled="productAddSending">
+              <button class="button button--primery" :class="{ 'button--load': productAddSending }" type="submit" :disabled="productAddSending">
                 <span v-show="!productAddSending">В корзину</span>
                 <span v-show="productAddSending" class="loader loader--small"></span>
               </button>
-            </div>
 
-            <div v-show="productAdded">Товар добавлен в корзину</div>
+              <BaseModal v-model:open="productAdded">Товар добавлен в корзину</BaseModal>
+            </div>
           </form>
         </div>
       </div>
@@ -88,24 +81,16 @@
       <div class="item__desc">
         <ul class="tabs">
           <li class="tabs__item">
-            <a class="tabs__link tabs__link--current">
-              Описание
-            </a>
+            <a class="tabs__link tabs__link--current"> Описание </a>
           </li>
           <li class="tabs__item">
-            <a class="tabs__link" href="#">
-              Характеристики
-            </a>
+            <a class="tabs__link" href="#"> Характеристики </a>
           </li>
           <li class="tabs__item">
-            <a class="tabs__link" href="#">
-              Гарантия
-            </a>
+            <a class="tabs__link" href="#"> Гарантия </a>
           </li>
           <li class="tabs__item">
-            <a class="tabs__link" href="#">
-              Оплата и доставка
-            </a>
+            <a class="tabs__link" href="#"> Оплата и доставка </a>
           </li>
         </ul>
 
@@ -124,8 +109,13 @@ import gotoPage from '@/helpers/gotoPage';
 import { mapActions } from 'vuex';
 import ProductsApi from '@/api/ProductsApi';
 import numberFormat from '@/helpers/numberFormat';
+import BaseModal from '@/components/BaseModal.vue';
 
 export default {
+  components: {
+    BaseModal,
+  },
+
   data() {
     return {
       productAmount: 1,
@@ -159,12 +149,11 @@ export default {
     addToCart() {
       this.productAdded = false;
       this.productAddSending = true;
-      this.addProductToCart({ productId: this.product.id, amount: this.productAmount })
-        .then(() => {
-          this.productAdded = true;
-          this.productAddSending = false;
-          this.productAmount = 1;
-        });
+      this.addProductToCart({ productId: this.product.id, amount: this.productAmount }).then(() => {
+        this.productAdded = true;
+        this.productAddSending = false;
+        this.productAmount = 1;
+      });
     },
 
     downProductAmount() {
@@ -181,9 +170,15 @@ export default {
       this.productLoading = true;
       this.productLoadingFailed = false;
       ProductsApi.getById(this.$route.params.id)
-        .then((response) => { this.productData = response.data; })
-        .catch(() => { this.productLoadingFailed = true; })
-        .finally(() => { this.productLoading = false; });
+        .then((response) => {
+          this.productData = response.data;
+        })
+        .catch(() => {
+          this.productLoadingFailed = true;
+        })
+        .finally(() => {
+          this.productLoading = false;
+        });
     },
   },
 
@@ -203,7 +198,7 @@ export default {
 }
 
 .form__counter button.disabled {
-  opacity: .6;
+  opacity: 0.6;
   cursor: not-allowed;
 }
 </style>

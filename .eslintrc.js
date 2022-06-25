@@ -16,5 +16,6 @@ module.exports = {
     'no-alert': 'off',
     'vuejs-accessibility/label-has-for': 'off',
     'max-len': [2, 200, 4],
+    'linebreak-style': ['error', 'unix'],
   },
 };

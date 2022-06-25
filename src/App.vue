@@ -109,6 +109,8 @@
         </span>
       </div>
     </footer>
+
+    <div id="teleport-target"></div>
 </template>
 
 <script>

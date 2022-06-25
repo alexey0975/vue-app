@@ -24,7 +24,6 @@
 
         <BasePagination v-if="!productsLoading" v-model="page" :count="countProducts" :per-page="productsPerPage" />
       </section>
-
     </div>
   </main>
 </template>
