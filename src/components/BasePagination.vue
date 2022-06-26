@@ -28,14 +28,16 @@
 </template>
 
 <script>
+import { PRODUCTS_PER_PAGE } from '@/config';
+
 export default {
-  props: ['modelValue', 'count', 'perPage'],
+  props: ['modelValue', 'count'],
   computed: {
     page() {
       return this.modelValue;
     },
     pages() {
-      return Math.ceil(this.count / this.perPage);
+      return Math.ceil(this.count / PRODUCTS_PER_PAGE);
     },
   },
   methods: {

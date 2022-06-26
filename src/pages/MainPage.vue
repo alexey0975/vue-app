@@ -1,112 +1,79 @@
 <template>
   <main class="content container">
     <div class="content__top content__top--catalog">
-      <h1 class="content__title">
-        Каталог
-      </h1>
-      <span class="content__info">
-        152 товара
-      </span>
+      <h1 class="content__title">Каталог</h1>
+      <span class="content__info"> 152 товара </span>
     </div>
 
     <div class="content__catalog">
-      <ProductFilter v-model:price-from="filterPriceFrom" v-model:price-to="filterPriceTo"
-        v-model:category-id="filterCategoryId" v-model:color="filterColor" />
+      <ProductFilter
+        v-model:price-from="filter.priceFrom"
+        v-model:price-to="filter.priceTo"
+        v-model:category-id="filter.categoryId"
+        v-model:color="filter.color"
+      />
       <section class="catalog">
-        <div v-if="productsLoading" class="loader">Загрузка товаров...</div>
+        <div v-if="loadStatus.isLoading" class="loader">Загрузка товаров...</div>
 
-        <div v-if="productsLoadingFailed">
+        <div v-if="loadStatus.isFailed">
           <span>Произошла ошибка при загрузке товаров</span>
           <button @click.prevent="loadProducts()">Попробовать еще раз</button>
         </div>
 
-        <ProductList v-if="!productsLoading" :products="products" />
+        <div v-if="products.length === 0">Товаров не найдено...</div>
+        <ProductList v-if="!loadStatus.isLoading" :products="products" />
 
-        <BasePagination v-if="!productsLoading" v-model="page" :count="countProducts" :per-page="productsPerPage" />
+        <BasePagination
+          v-if="!loadStatus.isLoading"
+          v-model="page"
+          :count="countProducts"
+        />
+
       </section>
     </div>
   </main>
 </template>
 
 <script>
+import {
+  defineComponent, ref, computed, watch,
+} from 'vue';
 import ProductList from '@/components/ProductList.vue';
 import BasePagination from '@/components/BasePagination.vue';
 import ProductFilter from '@/components/ProductFilter.vue';
-import ProductsApi from '@/api/ProductsApi';
+import useProducts from '@/hooks/useProducts';
 
-export default {
+export default defineComponent({
   components: { ProductList, BasePagination, ProductFilter },
-  data() {
-    return {
-      filterPriceFrom: 0,
-      filterPriceTo: 0,
-      filterCategoryId: 0,
-      filterColor: 0,
 
-      page: 1,
+  setup() {
+    const {
+      productListData: productsData, fetchProductList, status: loadStatus, productListFilter: filter,
+    } = useProducts();
 
-      productsPerPage: 6,
-      productsData: null,
-      productsLoading: false,
-      productsLoadingFailed: false,
-    };
-  },
-
-  computed: {
-    products() {
-      return this.productsData ? this.productsData.items.map((product) => ({
+    const page = ref(1);
+    const countProducts = computed(() => (productsData.value ? productsData.value.pagination.total : 0));
+    const products = computed(() => (productsData.value
+      ? productsData.value.items.map((product) => ({
         ...product,
         image: product.image.file.url,
-      })) : [];
-    },
+      }))
+      : []));
 
-    countProducts() {
-      return this.productsData ? this.productsData.pagination.total : 0;
-    },
+    const loadProducts = () => { fetchProductList(page.value); };
+
+    watch([page, filter], () => { loadProducts(); });
+
+    loadProducts();
+
+    return {
+      products,
+      countProducts,
+      filter,
+      page,
+      loadProducts,
+      loadStatus,
+    };
   },
-
-  methods: {
-    loadProducts() {
-      this.productsLoading = true;
-      this.productsLoadingFailed = false;
-      clearTimeout(this.loadProductsTimer);
-      this.loadProductsTimer = setTimeout(() => {
-        ProductsApi.getList({
-          page: this.page,
-          limit: this.productsPerPage,
-          categoryId: this.filterCategoryId,
-          minPrice: this.filterPriceFrom,
-          maxPrice: this.filterPriceTo,
-          colorId: this.filterColor,
-        })
-          .then((response) => { this.productsData = response.data; })
-          .catch(() => { this.productsLoadingFailed = true; })
-          .finally(() => { this.productsLoading = false; });
-      }, 0);
-    },
-  },
-
-  watch: {
-    page() {
-      this.loadProducts();
-    },
-    filterCategoryId() {
-      this.loadProducts();
-    },
-    filterPriceFrom() {
-      this.loadProducts();
-    },
-    filterPriceTo() {
-      this.loadProducts();
-    },
-    filterColor() {
-      this.loadProducts();
-    },
-
-  },
-
-  created() {
-    this.loadProducts();
-  },
-};
+});
 </script>

@@ -15,7 +15,7 @@
       </div>
     </header>
 
-    <router-view />
+    <router-view :key="$route.fullPath" />
 
     <footer class="footer">
       <div class="footer__wrapper container">
@@ -141,6 +141,13 @@ export default {
   -moz-osx-font-smoothing grayscale
   text-align center
   color #2c3e50
+
+.form__counter button
+  cursor: pointer
+
+.form__counter button.disabled
+  opacity: 0.6
+  cursor: not-allowed
 
 .button--load
   padding 0

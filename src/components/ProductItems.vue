@@ -40,7 +40,6 @@
 </template>
 
 <script>
-import gotoPage from '@/helpers/gotoPage';
 import numberFormat from '@/helpers/numberFormat';
 import BaseModal from '@/components/BaseModal.vue';
 import { defineAsyncComponent, h } from 'vue';
@@ -65,7 +64,6 @@ export default {
   },
 
   methods: {
-    gotoPage,
 
     openQuickView(productId) {
       this.currentProductId = productId;

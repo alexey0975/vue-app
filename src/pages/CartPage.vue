@@ -56,25 +56,26 @@
 
 <script>
 import CartItem from '@/components/CartItem.vue';
-import { mapGetters } from 'vuex';
-import { defineComponent } from 'vue';
+import { defineComponent, computed } from 'vue';
+import useCartProduct from '@/hooks/useCartProduct';
 import numberFormat from '@/helpers/numberFormat';
 import wordEndFormat from '@/helpers/wordEndFormat';
 
 export default defineComponent({
-  computed: {
-    ...mapGetters({
-      products: 'cartDetailProducts',
-      totalPrice: 'cartTotalPrice',
-    }),
-    totalPricePretty() {
-      return numberFormat(this.totalPrice);
-    },
-    wordProductFormat() {
-      return wordEndFormat('товар', this.products.length);
-    },
-  },
   components: { CartItem },
+
+  setup() {
+    const { products, totalPrice } = useCartProduct();
+    const totalPricePretty = computed(() => numberFormat(totalPrice.value));
+    const wordProductFormat = computed(() => wordEndFormat('товар', products.value.length));
+
+    return {
+      products,
+      totalPrice,
+      totalPricePretty,
+      wordProductFormat,
+    };
+  },
 });
 </script>
 

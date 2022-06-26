@@ -50,37 +50,35 @@
 
 <script>
 import numberFormat from '@/helpers/numberFormat';
-import { mapActions } from 'vuex';
+import { defineComponent, computed } from 'vue';
+import useCount from '@/hooks/useCount';
+import useCartProduct from '@/hooks/useCartProduct';
 
-export default {
+export default defineComponent({
   props: ['item'],
-  computed: {
-    totalPricePretty() {
-      return numberFormat(this.item.product.price * this.item.amount);
-    },
-    amount: {
+
+  setup(props) {
+    const { doUpdateAmount, doDelete: deleteProduct } = useCartProduct();
+    const totalPricePretty = computed(() => numberFormat(props.item.product.price * props.item.amount));
+    const amount = computed({
       get() {
-        return this.item.amount;
+        return props.item.amount;
       },
       set(value) {
-        this.$store.dispatch('updateCardProductAmount', { productId: this.item.productId, amount: value });
+        doUpdateAmount(props.item.productId, value);
       },
-    },
-  },
-  methods: {
-    ...mapActions({ deleteProduct: 'deleteCartProduct' }),
+    });
+    const { doUpCount: upProductAmount, doDownCount: downProductAmount } = useCount(amount);
 
-    downProductAmount() {
-      if (this.amount > 1) {
-        this.amount -= 1;
-      }
-    },
-
-    upProductAmount() {
-      this.amount += 1;
-    },
+    return {
+      totalPricePretty,
+      amount,
+      upProductAmount,
+      downProductAmount,
+      deleteProduct,
+    };
   },
-};
+});
 </script>
 
 <style>
