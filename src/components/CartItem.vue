@@ -1,7 +1,12 @@
 <template>
   <li class="cart__item product">
     <div class="product__pic">
-      <img :src="item.product.image" width="120" height="120" :alt="item.product.title">
+      <img
+        :src="item.product.image"
+        width="120"
+        height="120"
+        :alt="item.product.title"
+      >
     </div>
     <h3 class="product__title">
       {{ item.product.title }}
@@ -9,7 +14,7 @@
     <p class="product__info product__info--color">
       Цвет:
       <span>
-        <i style="background-color: #FF6B00"></i>
+        <i style="background-color: #FF6B00" />
         Оранжевый
       </span>
     </p>
@@ -18,19 +23,39 @@
     </span>
 
     <div class="product__counter form__counter">
-      <button type="button" aria-label="Убрать один товар" @click.prevent="downProductAmount">
-        <svg width="10" height="10" fill="currentColor">
-          <use xlink:href="#icon-minus"></use>
+      <button
+        type="button"
+        aria-label="Убрать один товар"
+        @click.prevent="downProductAmount"
+      >
+        <svg
+          width="10"
+          height="10"
+          fill="currentColor"
+        >
+          <use xlink:href="#icon-minus" />
         </svg>
       </button>
 
-      <label>
-        <input type="text" v-model.number="amount" name="count">
+      <label for="count">
+        <input
+          v-model.number="amount"
+          type="text"
+          name="count"
+        >
       </label>
 
-      <button type="button" aria-label="Добавить один товар" @click.prevent="upProductAmount">
-        <svg width="10" height="10" fill="currentColor">
-          <use xlink:href="#icon-plus"></use>
+      <button
+        type="button"
+        aria-label="Добавить один товар"
+        @click.prevent="upProductAmount"
+      >
+        <svg
+          width="10"
+          height="10"
+          fill="currentColor"
+        >
+          <use xlink:href="#icon-plus" />
         </svg>
       </button>
     </div>
@@ -39,10 +64,18 @@
       {{ totalPricePretty }} ₽
     </b>
 
-    <button class="product__del button-del" type="button" aria-label="Удалить товар из корзины"
-      @click.prevent="deleteProduct(item.productId)">
-      <svg width="20" height="20" fill="currentColor">
-        <use xlink:href="#icon-close"></use>
+    <button
+      class="product__del button-del"
+      type="button"
+      aria-label="Удалить товар из корзины"
+      @click.prevent="deleteProduct(item.productId)"
+    >
+      <svg
+        width="20"
+        height="20"
+        fill="currentColor"
+      >
+        <use xlink:href="#icon-close" />
       </svg>
     </button>
   </li>
@@ -55,7 +88,9 @@ import useCount from '@/hooks/useCount';
 import useCartProduct from '@/hooks/useCartProduct';
 
 export default defineComponent({
-  props: ['item'],
+  props: {
+    item: { type: Object, required: true }
+  },
 
   setup(props) {
     const { doUpdateAmount, doDelete: deleteProduct } = useCartProduct();
@@ -66,7 +101,7 @@ export default defineComponent({
       },
       set(value) {
         doUpdateAmount(props.item.productId, value);
-      },
+      }
     });
     const { doUpCount: upProductAmount, doDownCount: downProductAmount } = useCount(amount);
 
@@ -75,9 +110,9 @@ export default defineComponent({
       amount,
       upProductAmount,
       downProductAmount,
-      deleteProduct,
+      deleteProduct
     };
-  },
+  }
 });
 </script>
 

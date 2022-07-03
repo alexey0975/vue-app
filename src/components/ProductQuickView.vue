@@ -1,7 +1,20 @@
 <template>
-  <section class="item loader" v-if="productStatus.isLoading">Загрузка товара...</section>
-  <section class="item" v-else-if="productStatus.isFailed">Не удалость загрузить товар.</section>
-  <ProductDetails :product="product" v-else/>
+  <section
+    v-if="productStatus.isLoading"
+    class="item loader"
+  >
+    Загрузка товара...
+  </section>
+  <section
+    v-else-if="productStatus.isFailed"
+    class="item"
+  >
+    Не удалость загрузить товар.
+  </section>
+  <product-details
+    v-else
+    :product="product"
+  />
 </template>
 
 <script>
@@ -10,20 +23,20 @@ import useProducts from '@/hooks/useProducts';
 import ProductDetails from '@/components/ProductDetails.vue';
 
 export default defineComponent({
-  props: {
-    productId: { type: [Number, String], required: true },
-  },
 
   components: { ProductDetails },
+  props: {
+    productId: { type: [Number, String], required: true }
+  },
 
   setup(props) {
     const {
-      product, fetchProduct, status: productStatus,
+      product, fetchProduct, status: productStatus
     } = useProducts();
 
     fetchProduct(props.productId);
 
     return { product, productStatus };
-  },
+  }
 });
 </script>

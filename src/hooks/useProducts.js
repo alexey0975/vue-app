@@ -8,27 +8,20 @@ export default () => {
   const productListData = ref(null);
   const category = computed(() => productData.value.category);
 
-  const productListFilter = reactive({
-    priceFrom: 0,
-    priceTo: 0,
-    categoryId: 0,
-    color: 0,
-  });
-
   const fetchStatus = reactive({
     isLoading: false,
-    isFailed: false,
+    isFailed: false
   });
 
-  const fetchProduct = (productId) => {
+  const fetchProduct = productId => {
     fetchStatus.isLoading = true;
     fetchStatus.isFailed = false;
     ProductsApi.getById(productId)
-      .then((response) => {
+      .then(response => {
         const product = response.data;
         productData.value = Object.assign(response.data, {
           pricePretty: numberFormat(product.price),
-          image: product.image.file.url,
+          image: product.image.file.url
         });
       })
       .catch(() => {
@@ -39,19 +32,21 @@ export default () => {
       });
   };
 
-  const fetchProductList = (page) => {
+  const fetchProductList = (page, {
+    categoryId, priceFrom, priceTo, color
+  }) => {
     fetchStatus.isLoading = true;
     fetchStatus.isFailed = false;
 
     ProductsApi.getList({
       page,
       limit: PRODUCTS_PER_PAGE,
-      categoryId: productListFilter.categoryId,
-      minPrice: productListFilter.priceFrom,
-      maxPrice: productListFilter.priceTo,
-      colorId: productListFilter.color,
+      categoryId,
+      minPrice: priceFrom,
+      maxPrice: priceTo,
+      colorId: color
     })
-      .then((response) => {
+      .then(response => {
         productListData.value = response.data;
       })
       .catch(() => {
@@ -66,9 +61,8 @@ export default () => {
     product: productData,
     category,
     productListData,
-    productListFilter,
     fetchProduct,
     fetchProductList,
-    status: fetchStatus,
+    status: fetchStatus
   };
 };

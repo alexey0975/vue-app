@@ -1,16 +1,22 @@
 <template>
   <ul class="catalog__list">
-    <ProductItems class="catalog__item" :products="products"/>
+    <product-items
+      class="catalog__item"
+      :products="products"
+    />
   </ul>
 </template>
 
 <script>
+import { defineComponent } from 'vue';
 import ProductItems from './ProductItems.vue';
 
-export default {
+export default defineComponent({
   components: { ProductItems },
-  props: ['products'],
-};
+  props: {
+    products: { type: Array, required: true }
+  }
+});
 </script>
 
 <style lang="stylus">

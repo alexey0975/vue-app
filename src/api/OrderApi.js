@@ -10,5 +10,5 @@ export default {
 
   create(body, params) {
     return axios.post(ORDER_API_URL, body, { params });
-  },
+  }
 };

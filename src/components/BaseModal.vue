@@ -1,9 +1,23 @@
 <template>
-  <teleport v-if="open" to="#teleport-target">
-    <!-- eslint-disable-next-line vuejs-accessibility/click-events-have-key-events -->
-    <div class="modal-wrapper" @click="onOutsideClick">
-      <div ref="contentElement" class="modal">
-        <button class="modal__close-btn" @click="doClose">X</button>
+  <teleport
+    v-if="open"
+    to="#teleport-target"
+  >
+    <div
+      class="modal-wrapper"
+      @keypress="onOutsideClick"
+      @click="onOutsideClick"
+    >
+      <div
+        ref="contentElement"
+        class="modal"
+      >
+        <button
+          class="modal__close-btn"
+          @click="doClose"
+        >
+          X
+        </button>
         <div class="modal__content">
           <slot />
         </div>
@@ -18,8 +32,9 @@ import useModal from '@/hooks/useModal';
 
 export default defineComponent({
   props: {
-    open: { type: Boolean },
+    open: { type: Boolean }
   },
+  emits: ['update:open'],
 
   setup(props, { emit: $emit }) {
     const contentElement = ref(null);
@@ -29,13 +44,13 @@ export default defineComponent({
       $emit('update:open', false);
     };
 
-    const onOutsideClick = ($event) => {
+    const onOutsideClick = $event => {
       if ($event.target !== contentElement.value && $event.target.contains(contentElement.value)) {
         doCloseModal();
       }
     };
 
-    watch(() => props.open, (isOpen) => {
+    watch(() => props.open, isOpen => {
       if (isOpen) {
         doOpen();
       } else {
@@ -46,9 +61,9 @@ export default defineComponent({
     return {
       doClose: doCloseModal,
       onOutsideClick,
-      contentElement,
+      contentElement
     };
-  },
+  }
 });
 </script>
 

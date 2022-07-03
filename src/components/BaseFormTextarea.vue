@@ -1,8 +1,14 @@
 <!-- eslint-disable vuejs-accessibility/form-control-has-label -->
 <template>
-  <BaseFormField :error="error" :title="title">
-    <textarea class="form__input form__input--area" v-model="dataValue"
-      :placeholder="placeholder"></textarea>
+  <BaseFormField
+    :error="error"
+    :title="title"
+  >
+    <textarea
+      v-model="dataValue"
+      class="form__input form__input--area"
+      :placeholder="placeholder"
+    />
   </BaseFormField>
 </template>
 
@@ -10,6 +16,6 @@
 import formFieldMixin from '@/mixins/formFieldMixin';
 
 export default {
-  mixins: [formFieldMixin],
+  mixins: [formFieldMixin]
 };
 </script>

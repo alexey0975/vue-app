@@ -1,18 +1,34 @@
 <template>
-  <router-link class="header__cart" :to="{ name: 'cart' }" aria-label="Корзина с товарами">
-    <svg width="30" height="21" fill="currentColor">
-      <use xlink:href="#icon-cart"></use>
+  <router-link
+    class="header__cart"
+    :to="{ name: 'cart' }"
+    aria-label="Корзина с товарами"
+  >
+    <svg
+      width="30"
+      height="21"
+      fill="currentColor"
+    >
+      <use xlink:href="#icon-cart" />
     </svg>
-    <span class="header__count" aria-label="Количество товаров" v-show="amountProducts">{{ amountProducts }}</span>
+    <span
+      v-show="amountProducts"
+      class="header__count"
+      aria-label="Количество товаров"
+    >{{ amountProducts }}</span>
   </router-link>
 </template>
 
 <script>
-export default {
-  computed: {
-    amountProducts() {
-      return this.$store.state.cartProducts.length;
-    },
-  },
-};
+import { defineComponent } from 'vue';
+import useCartProduct from '@/hooks/useCartProduct';
+
+export default defineComponent({
+  setup() {
+    const { amountProducts } = useCartProduct();
+    return {
+      amountProducts
+    };
+  }
+});
 </script>

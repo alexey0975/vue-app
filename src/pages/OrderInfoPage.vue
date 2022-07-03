@@ -3,12 +3,18 @@
     <div class="content__top">
       <ul class="breadcrumbs">
         <li class="breadcrumbs__item">
-          <router-link class="breadcrumbs__link" :to="{ name: 'main' }">
+          <router-link
+            class="breadcrumbs__link"
+            :to="{ name: 'main' }"
+          >
             Каталог
           </router-link>
         </li>
         <li class="breadcrumbs__item">
-          <router-link class="breadcrumbs__link" :to="{ name: 'cart' }">
+          <router-link
+            class="breadcrumbs__link"
+            :to="{ name: 'cart' }"
+          >
             Корзина
           </router-link>
         </li>
@@ -18,15 +24,35 @@
           </a>
         </li>
       </ul>
-      <div v-if="orderLoader" class="loader">Загрузка</div>
-      <div v-if="orderErrorLoad" class="loader">Не удалось загрузить информацию о заказе</div>
+      <div
+        v-if="orderLoader"
+        class="loader"
+      >
+        Загрузка
+      </div>
+      <div
+        v-if="orderErrorLoad"
+        class="loader"
+      >
+        Не удалось загрузить информацию о заказе
+      </div>
 
-      <h1 v-if="orderData" class="content__title">
+      <h1
+        v-if="orderData"
+        class="content__title"
+      >
         Заказ оформлен <span>№ {{ order.id }}</span>
       </h1>
     </div>
-    <section v-if="orderData" class="cart">
-      <form class="cart__form form" action="#" method="POST">
+    <section
+      v-if="orderData"
+      class="cart"
+    >
+      <form
+        class="cart__form form"
+        action="#"
+        method="POST"
+      >
         <div class="cart__field">
           <p class="cart__message">
             Благодарим за&nbsp;выбор нашего магазина. На&nbsp;Вашу почту придет письмо с&nbsp;деталями заказа.
@@ -79,13 +105,19 @@
 
         <div class="cart__block">
           <ul class="cart__orders">
-            <OrderItem :item="item" v-for="item in order.basket.items" :key="item.id" />
+            <order-item
+              v-for="item in order.basket.items"
+              :key="item.id"
+              :item="item"
+            />
           </ul>
 
           <div class="cart__total">
             <p>Доставка: <b>500 ₽</b></p>
-            <p>Итого: <b>{{ order.basket.items.length }}</b> {{ wordProductFormat }} на
-              сумму <b>{{ totalPricePretty }} ₽</b></p>
+            <p>
+              Итого: <b>{{ order.basket.items.length }}</b> {{ wordProductFormat }} на
+              сумму <b>{{ totalPricePretty }} ₽</b>
+            </p>
           </div>
         </div>
       </form>
@@ -107,7 +139,7 @@ export default {
     return {
       orderLoader: false,
       orderErrorLoad: false,
-      orderData: null,
+      orderData: null
     };
   },
 
@@ -117,11 +149,11 @@ export default {
         ...this.orderData,
         basket: {
           ...this.orderData.basket,
-          items: this.orderData.basket.items.map((item) => ({
+          items: this.orderData.basket.items.map(item => ({
             ...item,
-            amount: item.quantity,
-          })),
-        },
+            amount: item.quantity
+          }))
+        }
       };
     },
     totalPricePretty() {
@@ -129,12 +161,9 @@ export default {
     },
     wordProductFormat() {
       return wordEndFormat('товар', this.order.basket.items.length);
-    },
+    }
   },
 
-  methods: {
-    ...mapActions(['loadOrderInfo']),
-  },
   created() {
     this.orderLoader = true;
     this.orderErrorLoad = false;
@@ -155,5 +184,9 @@ export default {
         this.orderLoader = false;
       });
   },
+
+  methods: {
+    ...mapActions(['loadOrderInfo'])
+  }
 };
 </script>

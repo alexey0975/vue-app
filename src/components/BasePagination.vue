@@ -1,26 +1,52 @@
 <template>
   <ul class="catalog__pagination pagination">
     <li class="pagination__item">
-      <a class="pagination__link pagination__link--arrow" :class="{ 'pagination__link--disabled': page === 1 }" href="#"
-        aria-label="Предыдущая страница" @click.prevent="paginatePrew(page)">
-        <svg width="8" height="14" fill="currentColor">
-          <use xlink:href="#icon-arrow-left"></use>
+      <a
+        class="pagination__link pagination__link--arrow"
+        :class="{ 'pagination__link--disabled': currentPage === 1 }"
+        href="#"
+        aria-label="Предыдущая страница"
+        @click.prevent="paginatePrew()"
+      >
+        <svg
+          width="8"
+          height="14"
+          fill="currentColor"
+        >
+          <use xlink:href="#icon-arrow-left" />
         </svg>
       </a>
     </li>
 
-    <li class="pagination__item" v-for="pageNumber in pages" :key="pageNumber">
-      <a href="#" class="pagination__link" :class="{ 'pagination__link--current': pageNumber === page }"
-        @click.prevent="paginate(pageNumber)">
-        {{ pageNumber }}
+    <li
+      v-for="page in pages"
+      :key="page"
+      class="pagination__item"
+    >
+      <a
+        href="#"
+        class="pagination__link"
+        :class="{ 'pagination__link--current': page === currentPage }"
+        @click.prevent="paginate(page)"
+      >
+        {{ page }}
       </a>
     </li>
 
     <li class="pagination__item">
-      <a class="pagination__link pagination__link--arrow" :class="{ 'pagination__link--disabled': pages === page }"
-        href="#" aria-label="Следующая страница" @click.prevent="paginateNext(page)">
-        <svg width=" 8" height="14" fill="currentColor">
-          <use xlink:href="#icon-arrow-right"></use>
+      <a
+        class="pagination__link pagination__link--arrow"
+        :class="{ 'pagination__link--disabled': pages === currentPage }"
+        href="#"
+        aria-label="Следующая страница"
+        @click.prevent="paginateNext()"
+      >
+        <svg
+          width=" 8"
+          height="14"
+          fill="currentColor"
+        >
+          <use xlink:href="#icon-arrow-right" />
         </svg>
       </a>
     </li>
@@ -29,33 +55,45 @@
 
 <script>
 import { PRODUCTS_PER_PAGE } from '@/config';
+import { defineComponent, computed } from 'vue';
 
-export default {
-  props: ['modelValue', 'count'],
-  computed: {
-    page() {
-      return this.modelValue;
-    },
-    pages() {
-      return Math.ceil(this.count / PRODUCTS_PER_PAGE);
-    },
+export default defineComponent({
+  props: {
+    modelValue: { type: [Number, String], required: true },
+    count: { type: [Number, String], required: true }
   },
-  methods: {
-    paginate(page) {
-      if (page >= 1 && page <= this.pages) {
-        this.$emit('update:modelValue', page);
+  emits: ['update:modelValue'],
+
+  setup(props, { emit: $emit }) {
+    const currentPage = computed(() => props.modelValue);
+
+    const pages = computed(() => Math.ceil(props.count / PRODUCTS_PER_PAGE));
+
+    const paginate = page => {
+      if (page >= 1 && page <= pages.value) {
+        $emit('update:modelValue', page);
       }
-    },
-    paginateNext(page) {
-      if (page >= 1 && page <= this.pages) {
-        this.$emit('update:modelValue', page + 1);
+    };
+
+    const paginateNext = () => {
+      if (currentPage.value >= 1 && currentPage.value < pages.value) {
+        $emit('update:modelValue', currentPage.value + 1);
       }
-    },
-    paginatePrew(page) {
-      if (page >= 1 && page <= this.pages) {
-        this.$emit('update:modelValue', page - 1);
+    };
+
+    const paginatePrew = () => {
+      if (currentPage.value > 1 && currentPage.value <= pages.value) {
+        $emit('update:modelValue', currentPage.value - 1);
       }
-    },
-  },
-};
+    };
+
+    return {
+      currentPage,
+      pages,
+      paginate,
+      paginateNext,
+      paginatePrew
+    };
+  }
+});
 </script>

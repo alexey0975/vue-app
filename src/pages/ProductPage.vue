@@ -1,18 +1,38 @@
 <template>
-  <main class="content container loader" v-if="productStatus.isLoading">Загрузка товара...</main>
-  <main class="content container loader" v-else-if="productStatus.isFailed">
+  <main
+    v-if="productStatus.isLoading"
+    class="content container loader"
+  >
+    Загрузка товара...
+  </main>
+  <main
+    v-else-if="productStatus.isFailed"
+    class="content container loader"
+  >
     Не удалость загрузить товар.
   </main>
-  <main class="content container" v-else>
-    <div v-if="product && category" class="content__top">
+  <main
+    v-else
+    class="content container"
+  >
+    <div
+      v-if="product && category"
+      class="content__top"
+    >
       <ul class="breadcrumbs">
         <li class="breadcrumbs__item">
-          <router-link class="breadcrumbs__link" :to="{ name: 'main' }">
+          <router-link
+            class="breadcrumbs__link"
+            :to="{ name: 'main' }"
+          >
             Каталог
           </router-link>
         </li>
         <li class="breadcrumbs__item">
-          <router-link class="breadcrumbs__link" :to="{ name: 'main' }">
+          <router-link
+            class="breadcrumbs__link"
+            :to="{ name: 'main' }"
+          >
             {{ category.title }}
           </router-link>
         </li>
@@ -24,7 +44,7 @@
       </ul>
     </div>
 
-    <ProductDetails :product="product" />
+    <product-details :product="product" />
   </main>
 </template>
 
@@ -41,12 +61,12 @@ export default defineComponent({
     const $route = useRoute();
     const productId = $route.params.id;
     const {
-      product, category, fetchProduct, status: productStatus,
+      product, category, fetchProduct, status: productStatus
     } = useProducts();
 
     fetchProduct(productId);
 
     return { product, category, productStatus };
-  },
+  }
 });
 </script>

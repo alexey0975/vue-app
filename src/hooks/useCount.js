@@ -1,6 +1,6 @@
 import { ref } from 'vue';
 
-export default (startValue) => {
+export default startValue => {
   const count = ref(startValue);
   const doDownCount = () => {
     if (count.value > 1) {
@@ -15,6 +15,6 @@ export default (startValue) => {
   return {
     count,
     doUpCount,
-    doDownCount,
+    doDownCount
   };
 };

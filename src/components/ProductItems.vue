@@ -1,7 +1,18 @@
 <template>
-  <li v-bind="$attrs" v-for="product in productsNormalized" :key="product.id">
-    <a href="#" @click.prevent="openQuickView(product.id)" class="catalog__pic">
-      <img :src="product.image" :alt="product.title" />
+  <li
+    v-for="product in productsNormalized"
+    v-bind="$attrs"
+    :key="product.id"
+  >
+    <a
+      href="#"
+      class="catalog__pic"
+      @click.prevent="openQuickView(product.id)"
+    >
+      <img
+        :src="product.image"
+        :alt="product.title"
+      >
     </a>
 
     <h3 class="catalog__title">
@@ -16,27 +27,33 @@
     <span class="catalog__price"> {{ product.pricePretty }} ₽ </span>
 
     <ul class="colors colors--black">
-      <li class="colors__item" v-for="color in product.colors" :key="color.id">
-        <label class="colors__label">
+      <li
+        v-for="color in product.colors"
+        :key="color.id"
+        class="colors__item"
+      >
+        <label
+          class="colors__label"
+          for="color"
+        >
           <input
             class="colors__radio sr-only"
             type="radio"
             :value="color.title"
             name="color"
-          />
+          >
           <span
             class="colors__value"
             :style="{ backgroundColor: color.code, border: '1px solid #a7a7a7' }"
-          >
-          </span>
+          />
         </label>
       </li>
     </ul>
   </li>
 
-  <BaseModal v-model:open="IsQuickViewOpen">
-    <ProductQuickView :product-id="currentProductId" />
-  </BaseModal>
+  <base-modal v-model:open="IsQuickViewOpen">
+    <product-quick-view :product-id="currentProductId" />
+  </base-modal>
 </template>
 
 <script>
@@ -45,30 +62,25 @@ import BaseModal from '@/components/BaseModal.vue';
 import { defineAsyncComponent, h } from 'vue';
 
 export default {
-  inheritAttrs: false,
-  props: ['products'],
-
-  data() {
-    return {
-      currentProductId: null,
-    };
-  },
-
   components: {
     BaseModal,
     ProductQuickView: defineAsyncComponent({
       loader: () => import('@/components/ProductQuickView.vue'),
       delay: 0,
-      loadingComponent: () => h('div', 'Загрузка...'),
-    }),
+      loadingComponent: () => h('div', 'Загрузка...')
+    })
+  },
+  inheritAttrs: false,
+  props: {
+    products: { type: Object, required: true }
   },
 
-  methods: {
-
-    openQuickView(productId) {
-      this.currentProductId = productId;
-    },
+  data() {
+    return {
+      currentProductId: null
+    };
   },
+
   computed: {
     IsQuickViewOpen: {
       get() {
@@ -78,15 +90,22 @@ export default {
         if (!isOpen) {
           this.currentProductId = null;
         }
-      },
+      }
     },
     productsNormalized() {
-      return this.products.map((product) => ({
+      return this.products.map(product => ({
         ...product,
-        pricePretty: numberFormat(product.price),
+        pricePretty: numberFormat(product.price)
       }));
-    },
+    }
   },
+
+  methods: {
+
+    openQuickView(productId) {
+      this.currentProductId = productId;
+    }
+  }
 };
 </script>
 

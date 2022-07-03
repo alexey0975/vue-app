@@ -10,11 +10,13 @@
 import numberFormat from '@/helpers/numberFormat';
 
 export default {
-  props: ['item'],
+  props: {
+    item: { type: Object, required: true }
+  },
   computed: {
     pricePretty() {
       return numberFormat(this.item.product.price);
-    },
-  },
+    }
+  }
 };
 </script>

@@ -1,5 +1,5 @@
 import {
-  ref, getCurrentInstance, computed, watch,
+  ref, getCurrentInstance, computed, watch
 } from 'vue';
 
 const openModalCount = ref(new Set());
@@ -37,6 +37,6 @@ export default () => {
     doOpen,
     doClose,
     isOpen,
-    isSomeOpen,
+    isSomeOpen
   };
 };

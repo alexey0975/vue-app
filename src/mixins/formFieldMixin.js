@@ -10,7 +10,7 @@ export default {
       },
       set(modelValue) {
         this.$emit('update:modelValue', modelValue);
-      },
-    },
-  },
+      }
+    }
+  }
 };

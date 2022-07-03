@@ -18,5 +18,5 @@ export default {
 
   deleteProduct(body, params) {
     return axios.delete(`${CART_API_URL}/products`, { data: body, params });
-  },
+  }
 };

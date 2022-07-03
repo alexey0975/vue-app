@@ -10,5 +10,5 @@ export default {
 
   getById(productId) {
     return axios.get(`${PRODUCTS_API_URL}/${productId}`);
-  },
+  }
 };

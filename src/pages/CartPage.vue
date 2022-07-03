@@ -3,7 +3,10 @@
     <div class="content__top">
       <ul class="breadcrumbs">
         <li class="breadcrumbs__item">
-          <router-link class="breadcrumbs__link" :to="{ name: 'main' }">
+          <router-link
+            class="breadcrumbs__link"
+            :to="{ name: 'main' }"
+          >
             Каталог
           </router-link>
         </li>
@@ -22,11 +25,22 @@
       </span>
     </div>
 
-    <section class="cart" v-if="products.length">
-      <form class="cart__form form" action="#" method="POST">
+    <section
+      v-if="products.length"
+      class="cart"
+    >
+      <form
+        class="cart__form form"
+        action="#"
+        method="POST"
+      >
         <div class="cart__field">
           <ul class="cart__list">
-            <CartItem :item="item" v-for="item in products" :key="item.productId" />
+            <cart-item
+              v-for="item in products"
+              :key="item.productId"
+              :item="item"
+            />
           </ul>
         </div>
 
@@ -38,8 +52,16 @@
             Итого: <span> {{ totalPricePretty }} ₽</span>
           </p>
 
-          <router-link v-slot="{ navigate }" :to="{ name: 'order' }" custom>
-            <button class="cart__button button button--primery" :disabled="!totalPrice" @click="navigate">
+          <router-link
+            v-slot="{ navigate }"
+            :to="{ name: 'order' }"
+            custom
+          >
+            <button
+              class="cart__button button button--primery"
+              :disabled="!totalPrice"
+              @click="navigate"
+            >
               Оформить заказ
             </button>
           </router-link>
@@ -47,9 +69,19 @@
       </form>
     </section>
 
-    <section class="cart-empty" v-else>
-      <h2 class="cart-empty__title">В корзине нет ни одного товара</h2>
-      <router-link class="cart-empty__link" :to="{ name: 'main' }">Перейти к покупкам</router-link>
+    <section
+      v-else
+      class="cart-empty"
+    >
+      <h2 class="cart-empty__title">
+        В корзине нет ни одного товара
+      </h2>
+      <router-link
+        class="cart-empty__link"
+        :to="{ name: 'main' }"
+      >
+        Перейти к покупкам
+      </router-link>
     </section>
   </main>
 </template>
@@ -73,9 +105,9 @@ export default defineComponent({
       products,
       totalPrice,
       totalPricePretty,
-      wordProductFormat,
+      wordProductFormat
     };
-  },
+  }
 });
 </script>
 

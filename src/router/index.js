@@ -12,11 +12,11 @@ const routes = [
   { name: 'cart', component: CartPage, path: '/cart' },
   { name: 'order', component: OrderPage, path: '/order' },
   { name: 'orderInfo', component: OrderInfoPage, path: '/order/:id' },
-  { name: 'notFound', component: NotFoundPage, path: '/:pathMatch(.*)*' },
+  { name: 'notFound', component: NotFoundPage, path: '/:pathMatch(.*)*' }
 ];
 const router = createRouter({
   history: createWebHashHistory(),
-  routes,
+  routes
 });
 
 export default router;

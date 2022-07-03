@@ -6,7 +6,7 @@ import App from './App.vue';
 const app = createApp({
   router,
   store,
-  render: () => h(App),
+  render: () => h(App)
 });
 
 app.use(router);
